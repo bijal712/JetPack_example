@@ -6,4 +6,10 @@
     <string name="hello_second_fragment">Hello Second fragment</string>
     <string name="first">First</string>
     <string name="second">Second</string>
+    <string name="name">Name</string>
+    <string name="age">Age</string>
+    <string name="add">Add</string>
+    <string name="get">Get</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
 </resources>

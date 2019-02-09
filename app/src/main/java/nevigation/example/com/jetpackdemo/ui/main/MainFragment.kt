@@ -1,5 +1,6 @@
 package nevigation.example.com.jetpackdemo.ui.main
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -34,5 +35,4 @@ class MainFragment : Fragment() {
             Navigation.findNavController(it).navigate(R.id.action_mainFragment_to_secondFragment)
         }
     }
-
 }
