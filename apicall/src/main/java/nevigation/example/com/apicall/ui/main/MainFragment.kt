@@ -27,6 +27,7 @@ class MainFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
+
         return inflater.inflate(nevigation.example.com.apicall.R.layout.main_fragment, container, false)
     }
 
