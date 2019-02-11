@@ -50,14 +50,21 @@ class FirstFragment : Fragment(), View.OnClickListener, MyClickListener {
         when(view.id) {
             R.id.btnAdd -> {
                 val name = etName.text.toString().trim()
-                val age = etAge.text.toString().trim().toInt()
+                val age = etAge.text.toString().trim()
 
-                val person = Person(null, name, age)
-                viewModel.insert(person)
+                if(!name.isEmpty() && !age.isEmpty()) {
+                    val num = age.toInt()
+
+                    val person = Person(null, name, num)
+                    viewModel.insert(person)
+                }else{
+                    Toast.makeText(activity!!,"something is missing",Toast.LENGTH_LONG).show()
+                }
             }
             R.id.btnGet -> {
                 viewModel.gteAllTodo()?.observe(this, Observer {
                     if (it != null) {
+                        userList.clear()
                         userList.addAll(it)
                         adapter?.notifyDataSetChanged()
                     }
@@ -67,7 +74,6 @@ class FirstFragment : Fragment(), View.OnClickListener, MyClickListener {
 
 
     }
-
 
     //adapter views click
     override fun myClick(view: View, position: Int) {
