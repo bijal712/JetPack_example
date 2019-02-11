@@ -1,10 +1,5 @@
-package nevigation.example.com.apicall
-
-import android.arch.persistence.room.*
-import retrofit2.Call
-import retrofit2.http.GET
-
-@Entity
+package nevigation.example.com.apicall.model
+//@Entity
 class UserModel {
         val userId: Long? = null
         val id: Long? = null

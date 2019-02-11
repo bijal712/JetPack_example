@@ -13,7 +13,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.item_view.view.*
 import kotlinx.android.synthetic.main.main_fragment.*
 import nevigation.example.com.apicall.R
-import nevigation.example.com.apicall.UserModel
+import nevigation.example.com.apicall.model.UserModel
 
 
 class MainFragment : Fragment() {
@@ -31,19 +31,27 @@ class MainFragment : Fragment() {
         return inflater.inflate(nevigation.example.com.apicall.R.layout.main_fragment, container, false)
     }
 
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        rvGetData.layoutManager = LinearLayoutManager(activity!!)
+
+    }
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
-        rvGetData.layoutManager = LinearLayoutManager(activity!!)
-        adapter = UserAdapter(usersList)
-        rvGetData.adapter = adapter
+
+        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
         viewModel.getPhotographer().observe(this, Observer<List<UserModel>> { usersData ->
             usersList = usersData
-            adapter?.notifyDataSetChanged()
-            Log.d("TAG", "success $usersData")
-        })    }
+            adapter = UserAdapter(usersList)
+            rvGetData.adapter = adapter
+
+           /*
+            adapter?.notifyDataSetChanged()*/
+        })
+    }
 
     class UserAdapter(private val usersList: List<UserModel>?) : RecyclerView.Adapter<UserAdapter.MyViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, p1: Int): MyViewHolder {
@@ -64,6 +72,8 @@ class MainFragment : Fragment() {
         inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
             fun bindItems(users: UserModel) {
+                itemView.tvId.text = users.id.toString()
+                itemView.tvUserId.text = users.userId.toString()
                 itemView.tvTitle.text = users.title
             }
         }

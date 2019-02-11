@@ -1,7 +1,7 @@
 package nevigation.example.com.apicall.utils
 
 
-import nevigation.example.com.apicall.UserModel
+import nevigation.example.com.apicall.model.UserModel
 import retrofit2.Call
 import retrofit2.http.GET
 
