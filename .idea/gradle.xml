@@ -10,6 +10,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/apicall" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/pagingdemo" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
