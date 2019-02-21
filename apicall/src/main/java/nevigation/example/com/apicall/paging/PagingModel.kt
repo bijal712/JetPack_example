@@ -1,30 +1,51 @@
-package nevigation.example.com.pagingdemo.paging
+package nevigation.example.com.apicall.paging
 
+import android.arch.paging.DataSource
 import android.arch.persistence.db.SupportSQLiteDatabase
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.Room
-import android.arch.persistence.room.RoomDatabase
+import android.arch.persistence.room.*
 import android.content.Context
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 
-@Database(entities = arrayOf(Cheese::class),version = 1,exportSchema = false)
-abstract class CheeseDb: RoomDatabase() {
-    abstract fun cheeseDao(): CheeseDao
+//table
+@Entity
+class PagingModel(@PrimaryKey(autoGenerate = true) val id: Int, val name: String)
+
+//query
+@Dao
+interface CheeseDao{
+    @Query("SELECT * FROM PagingModel ORDER BY name COLLATE NOCASE ASC")
+    fun allCheesesByName(): DataSource.Factory<Int, PagingModel>
+
+    @Insert
+    fun insert(cheeses: List<PagingModel>)
+
+    @Insert
+    fun insert(cheese: PagingModel)
+
+    @Delete
+    fun delete(cheese: PagingModel)
+}
+
+//database
+@Database(entities = arrayOf(PagingModel::class),version = 1)
+abstract class CheeseDb : RoomDatabase(){
+    abstract fun dao(): CheeseDao
+
     companion object {
         private var instance: CheeseDb? = null
         @Synchronized
-        fun get(context: Context): CheeseDb? {
+        fun get(context: Context): CheeseDb {
             if (instance == null) {
                 instance = Room.databaseBuilder(context.applicationContext,
-                        CheeseDb::class.java, "Cheese.Db")
-                        .addCallback(object : RoomDatabase.Callback(){
+                        CheeseDb::class.java, "CheeseDatabase")
+                        .addCallback(object : RoomDatabase.Callback() {
                             override fun onCreate(db: SupportSQLiteDatabase) {
-                                super.onCreate(db)
                                 fillInDb(context.applicationContext)
                             }
-                        })
-                        .build()
+                        }).build()
             }
-            return instance
+            return instance!!
         }
 
         /**
@@ -32,10 +53,8 @@ abstract class CheeseDb: RoomDatabase() {
          */
         private fun fillInDb(context: Context) {
             // inserts in Room are executed on the current thread, so we insert in the background
-            ioThread {
-                get(context)!!.cheeseDao().insert(
-                        CHEESE_DATA.map { Cheese(id = 0, name = it) })
-            }
+                get(context).dao().insert(
+                        CHEESE_DATA.map { PagingModel(id = 0, name = it) })
         }
     }
 }

@@ -8,7 +8,7 @@ import android.arch.persistence.room.Query
 
 @Dao
 interface CheeseDao {
-    @Query("SELECT * FROM Cheese ORDER BY name COLLATE NOCASE ASC")
+    @Query("SELECT * FROM Cheese ORDER BY name COLLATE NOCASE ASC") // ORDER BY name COLLATE NOCASE ASC
     fun allCheesesByName(): DataSource.Factory<Int, Cheese>
 
     @Insert
